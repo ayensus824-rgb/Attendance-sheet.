@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>computing attendance sheet</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <h2>computing attendance sheet</h2>
+            </div>
+            <nav class="nav-links">
+                <a href="#" class="nav-item active" data-tab="attendance-tab">
+                    <i class="fa-solid fa-clipboard-user"></i> Attendance
+                </a>
+                <a href="#" class="nav-item" data-tab="students-tab">
+                    <i class="fa-solid fa-users"></i> Students List
+                </a>
+                <a href="#" class="nav-item" data-tab="reports-tab">
+                    <i class="fa-solid fa-chart-pie"></i> Reports & Export
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <p>&copy; 2026 EduRegister Systems</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-title">
+                    <h1 id="page-title">Attendance Register</h1>
+                    <p id="current-date-display">Today's Date: Oct 7, 2026</p>
+                </div>
+                <div class="header-actions">
+                    <div class="class-selector-wrapper">
+                        <label for="global-class-select"><i class="fa-solid fa-layer-group"></i> Class:</label>
+                        <select id="global-class-select">
+                            <option value="Grade 10-A">Grade 10-A</option>
+                            <option value="Grade 10-B">Grade 10-B</option>
+                            <option value="Grade 11-Science">Grade 11-Science</option>
+                        </select>
+                    </div>
+                </div>
+            </header>
+
+            <!-- TAB 1: ATTENDANCE -->
+            <section id="attendance-tab" class="tab-content active">
+                <!-- Summary Metric Cards -->
+                <div class="metrics-grid">
+                    <div class="metric-card total">
+                        <div class="metric-icon"><i class="fa-solid fa-users"></i></div>
+                        <div class="metric-info">
+                            <span class="metric-value" id="stat-total">0</span>
+                            <span class="metric-label">Total Students</span>
+                        </div>
+                    </div>
+                    <div class="metric-card present">
+                        <div class="metric-icon"><i class="fa-solid fa-user-check"></i></div>
+                        <div class="metric-info">
+                            <span class="metric-value" id="stat-present">0</span>
+                            <span class="metric-label">Present</span>
+                        </div>
+                    </div>
+                    <div class="metric-card absent">
+                        <div class="metric-icon"><i class="fa-solid fa-user-xmark"></i></div>
+                        <div class="metric-info">
+                            <span class="metric-value" id="stat-absent">0</span>
+                            <span class="metric-label">Absent</span>
+                        </div>
+                    </div>
+                    <div class="metric-card late">
+                        <div class="metric-icon"><i class="fa-solid fa-user-clock"></i></div>
+                        <div class="metric-info">
+                            <span class="metric-value" id="stat-late">0</span>
+                            <span class="metric-label">Late</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controls Bar -->
+                <div class="controls-bar">
+                    <div class="date-picker-wrapper">
+                        <label for="attendance-date"><i class="fa-regular fa-calendar"></i> Select Date:</label>
+                        <input type="date" id="attendance-date">
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-outline" id="btn-mark-all-present">
+                            <i class="fa-solid fa-check-double"></i> Mark All Present
+                        </button>
+                        <button class="btn btn-primary" id="btn-save-attendance">
+                            <i class="fa-solid fa-floppy-disk"></i> Save Attendance
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Attendance Table -->
+                <div class="card table-card">
+                    <div class="table-responsive">
+                        <table class="data-table" id="attendance-table">
+                            <thead>
+                                <tr>
+                                    <th>Roll #</th>
+                                    <th>Student Name</th>
+                                    <th>Gender</th>
+                                    <th>Status</th>
+                                    <th>Remarks / Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendance-tbody">
+                                <!-- Dynamically populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: STUDENTS -->
+            <section id="students-tab" class="tab-content">
+                <div class="controls-bar">
+                    <div class="search-wrapper">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="student-search" placeholder="Search student by name or roll...">
+                    </div>
+                    <button class="btn btn-primary" id="btn-open-add-student">
+                        <i class="fa-solid fa-user-plus"></i> Add New Student
+                    </button>
+                </div>
+
+                <div class="card table-card">
+                    <div class="table-responsive">
+                        <table class="data-table" id="students-table">
+                            <thead>
+                                <tr>
+                                    <th>Roll #</th>
+                                    <th>Full Name</th>
+                                    <th>Class</th>
+                                    <th>Gender</th>
+                                    <th>Parent Contact</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="students-tbody">
+                                <!-- Dynamically populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: REPORTS & EXPORT -->
+            <section id="reports-tab" class="tab-content">
+                <div class="reports-grid">
+                    <div class="card report-card">
+                        <h3><i class="fa-solid fa-file-excel" style="color: #107c41;"></i> Export Attendance to Excel (CSV)</h3>
+                        <p>Download structured attendance records compatible with Microsoft Excel, Google Sheets, or LibreOffice.</p>
+                        
+                        <div class="export-form-group">
+                            <label for="export-format">Export Mode:</label>
+                            <select id="export-format">
+                                <option value="daily">Daily Attendance Sheet</option>
+                                <option value="summary">Class Aggregate Summary</option>
+                            </select>
+                        </div>
+                        <div class="export-form-group" id="export-date-group">
+                            <label for="export-date">Target Date:</label>
+                            <input type="date" id="export-date">
+                        </div>
+                        <button class="btn btn-success" id="btn-export-excel">
+                            <i class="fa-solid fa-download"></i> Download Excel (CSV)
+                        </button>
+                    </div>
+
+                    <div class="card report-card">
+                        <h3><i class="fa-solid fa-chart-line"></i> Quick Statistics Overview</h3>
+                        <div class="quick-stats-list">
+                            <div class="stat-row">
+                                <span>Active Class:</span>
+                                <strong id="report-class-name">Grade 10-A</strong>
+                            </div>
+                            <div class="stat-row">
+                                <span>Total Enrolled Students:</span>
+                                <strong id="report-total-students">0</strong>
+                            </div>
+                            <div class="stat-row">
+                                <span>Attendance Logging Days:</span>
+                                <strong id="report-logged-days">0</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal: Add / Edit Student -->
+    <div class="modal-backdrop" id="student-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-title">Add New Student</h3>
+                <button class="modal-close" id="btn-close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="student-form">
+                    <input type="hidden" id="edit-student-id">
+                    <div class="form-group">
+                        <label for="modal-roll">Roll Number *</label>
+                        <input type="text" id="modal-roll" required placeholder="e.g. 101">
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-name">Full Name *</label>
+                        <input type="text" id="modal-name" required placeholder="e.g. Jane Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-class">Class *</label>
+                        <select id="modal-class">
+                            <option value="Grade 10-A">Grade 10-A</option>
+                            <option value="Grade 10-B">Grade 10-B</option>
+                            <option value="Grade 11-Science">Grade 11-Science</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-gender">Gender</label>
+                        <select id="modal-gender">
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-contact">Parent Contact</label>
+                        <input type="text" id="modal-contact" placeholder="Phone or Email">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline" id="btn-cancel-modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Student</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast">Action completed successfully</div>
+
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
